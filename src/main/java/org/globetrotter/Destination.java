@@ -18,6 +18,10 @@ public class Destination {
     private String description;
     private int rating;
     private LocalDate arrivalDate;
+
+    public Destination() {
+    }
+
     private LocalDate departureDate;
     private ArrayList<String> images;
 
