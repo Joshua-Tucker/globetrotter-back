@@ -13,14 +13,15 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/destinations")
+@CrossOrigin
+@RequestMapping("/api/destinations")
 public class DestinationController {
 
     private final DestinationService destinationService;
-    private final com.example.services.ImageStorageService imageStorageService;
+    private final ImageStorageService imageStorageService;
 
     @Autowired
-    public DestinationController(DestinationService destinationService, com.example.services.ImageStorageService imageStorageService) {
+    public DestinationController(DestinationService destinationService, ImageStorageService imageStorageService) {
         this.destinationService = destinationService;
         this.imageStorageService = imageStorageService;
     }
