@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.util.Base64;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,22 +36,31 @@ public class DestinationController {
                                                               @RequestParam("rating") int rating,
                                                               @RequestParam("arrivalDate") String arrivalDateString,
                                                               @RequestParam("departureDate") String departureDateString,
-                                                              @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
-
+                                                              @RequestParam("imageFiles") MultipartFile[] imageFiles) throws IOException {
         LocalDate arrivalDate = LocalDate.parse(arrivalDateString);
         LocalDate departureDate = LocalDate.parse(departureDateString);
 
-        String filename = imageStorageService.storeImage(imageFile);
+        List<String> images = new ArrayList<>();
 
-        ArrayList<String> images = new ArrayList<>();
-        images.add(filename);
+        // Process each image file
+        for (MultipartFile imageFile : imageFiles) {
+            // Convert image file to base64
+            byte[] imageData = imageFile.getBytes();
+            String base64Image = Base64.getEncoder().encodeToString(imageData);
+            images.add(base64Image);
+        }
 
+        // Create the destination object
         Destination destination = new Destination(location, country, description, rating, arrivalDate, departureDate, images);
 
+        // Save the destination in the database
         Destination newDestination = destinationService.save(destination);
 
         return new ResponseEntity<>(newDestination, HttpStatus.CREATED);
     }
+
+
+
 
 
     @GetMapping("/all")
