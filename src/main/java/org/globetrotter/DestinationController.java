@@ -29,7 +29,7 @@ public class DestinationController {
         this.imageStorageService = imageStorageService;
     }
 
-    @PostMapping("/add")
+    @PostMapping(value = "/add", consumes = "multipart/form-data")
     public ResponseEntity<Destination> addDestinationFromForm(@RequestParam("location") String location,
                                                               @RequestParam("description") String description,
                                                               @RequestParam("country") String country,
